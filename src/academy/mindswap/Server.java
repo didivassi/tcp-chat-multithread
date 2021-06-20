@@ -44,7 +44,7 @@ public class Server {
     }
 
     private void listUsers(ClientHandler clientHandler){
-        clientHandlerList.stream()
+        clientHandlerList
                 .forEach(cl -> clientHandler.sendMessage(cl.userName));
     }
 
