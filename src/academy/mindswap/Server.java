@@ -32,8 +32,7 @@ public class Server {
         while (serverSocket.isBound()) {
             ClientHandler clientHandler = new ClientHandler(serverSocket.accept());
             clientHandlerList.add(clientHandler);
-            Future futureTask= pool.submit(clientHandler);
-            clientHandler.task=futureTask;
+            clientHandler.task= pool.submit(clientHandler);
 
         }
     }
