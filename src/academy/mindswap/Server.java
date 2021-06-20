@@ -7,6 +7,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.FutureTask;
 
 import static academy.mindswap.Messages.*;
 import static academy.mindswap.Commands.*;
@@ -30,7 +32,9 @@ public class Server {
         while (serverSocket.isBound()) {
             ClientHandler clientHandler = new ClientHandler(serverSocket.accept());
             clientHandlerList.add(clientHandler);
-            pool.submit(clientHandler);
+            Future futureTask= pool.submit(clientHandler);
+            clientHandler.task=futureTask;
+
         }
     }
 
@@ -57,6 +61,7 @@ public class Server {
     }
 
     private void removeClient(ClientHandler clientHandler){
+        clientHandler.task.cancel(true);
         clientHandlerList.remove(clientHandler);
     }
 
@@ -74,9 +79,9 @@ public class Server {
     private class ClientHandler implements Runnable{
         private final Socket clientSocket;
         private String userName ="temp00";
+        private Future task;
 
         public ClientHandler(Socket clientSocket){
-
             this.clientSocket=clientSocket;
         }
 
@@ -175,6 +180,8 @@ public class Server {
                 }
                 quit(false);
         }
+
+
 
     }
 }

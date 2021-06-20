@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.Locale;
 
 public class Client {
 
@@ -26,19 +27,22 @@ public class Client {
         while (!socket.isClosed()){
             BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
             sendMessage(reader.readLine());
-            System.out.println(socket.isClosed());
         }
-        System.out.println("Server disconnected");
-
 
     }
-    
 
+    private void quit() throws InterruptedException, IOException {
+        receiveThread.join();
+        socket.close();
+    }
     private void sendMessage(String message)  {
         try{
             PrintWriter out = new PrintWriter(socket.getOutputStream(),true);
             out.println(message);
-        }catch (IOException e){
+            if(message.toLowerCase().startsWith("/quit")){
+                quit();
+            }
+        }catch (IOException | InterruptedException e){
             System.out.println(e.getMessage());
         }
     }
