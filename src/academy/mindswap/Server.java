@@ -23,6 +23,16 @@ public class Server {
         clientHandlerList = new LinkedList<>();
     }
 
+    public static void main(String[] args) {
+        Server server = new Server(8080,10);
+        try {
+            server.startServer();
+            server.listen();
+        }catch (IOException e){
+            System.out.println(e.getMessage());
+        }
+
+    }
     private void startServer() throws IOException {
         serverSocket = new ServerSocket(port);
     }
@@ -61,18 +71,10 @@ public class Server {
     private void removeClient(ClientHandler clientHandler){
         clientHandler.task.cancel(true);
         clientHandlerList.remove(clientHandler);
-    }
-
-    public static void main(String[] args) {
-        Server server = new Server(8080,10);
-        try {
-            server.startServer();
-            server.listen();
-        }catch (IOException e){
-            System.out.println(e.getMessage());
-        }
 
     }
+
+
 
     private class ClientHandler implements Runnable{
         private final Socket clientSocket;
@@ -90,6 +92,7 @@ public class Server {
                 BufferedReader message= new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
                 line=message.readLine();
             }catch (IOException e){
+                System.out.println("1");
                 System.out.println(e.getMessage());
             }
             return line;
@@ -100,6 +103,7 @@ public class Server {
                 PrintWriter out = new PrintWriter(clientSocket.getOutputStream(),true);
                 out.println(message);
             }catch (IOException e){
+                System.out.println("2");
                 System.out.println(e.getMessage());
             }
         }
@@ -124,7 +128,8 @@ public class Server {
                 clientSocket.close();
                 removeClient(this);
             } catch (IOException e) {
-                e.printStackTrace();
+                System.out.println("3");
+                e.getMessage();
             }
         }
 
@@ -178,8 +183,5 @@ public class Server {
                 }
                 quit(false);
         }
-
-
-
     }
 }
