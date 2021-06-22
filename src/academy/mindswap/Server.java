@@ -5,6 +5,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -20,7 +21,7 @@ public class Server {
     public Server(int port, int poolSize){
         this.port = port;
         pool = Executors.newFixedThreadPool(poolSize);
-        clientHandlerList = new LinkedList<>();
+        clientHandlerList = new CopyOnWriteArrayList<>();
     }
 
     public static void main(String[] args) {
@@ -131,7 +132,7 @@ public class Server {
                 removeClient(this);
             } catch (IOException e) {
                 System.out.println("3");
-                e.getMessage();
+                System.out.println(e.getMessage());
             }
         }
 
