@@ -47,7 +47,7 @@ public class Server {
         }
     }
 
-    private void broadcast(String message, ClientHandler clientHandler) {
+    private synchronized void broadcast(String message, ClientHandler clientHandler) {
         clientHandlerList.stream()
                 .filter(cl -> !cl.equals(clientHandler))
                 .forEach(cl -> cl.sendMessage(clientHandler.userName+" says: " + message));
