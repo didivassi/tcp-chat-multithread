@@ -92,7 +92,8 @@ public class Server {
                 BufferedReader message= new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
                 line=message.readLine();
             }catch (IOException e){
-                System.out.println("1");
+                quit(false);
+                //System.out.println("1");
                 System.out.println(e.getMessage());
             }
             return line;
@@ -103,7 +104,8 @@ public class Server {
                 PrintWriter out = new PrintWriter(clientSocket.getOutputStream(),true);
                 out.println(message);
             }catch (IOException e){
-                System.out.println("2");
+                quit(false);
+               // System.out.println("2");
                 System.out.println(e.getMessage());
             }
         }
