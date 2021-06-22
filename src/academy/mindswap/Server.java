@@ -181,6 +181,9 @@ public class Server {
                         executeCommand(message);
                         continue;
                     }
+                    if(message.equals("")){
+                        continue;
+                    }
                     broadcast(message,this);
                 }
                 quit(false);
